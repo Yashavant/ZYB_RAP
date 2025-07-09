@@ -1,0 +1,4 @@
+@EndUserText.label: 'RAP Emp Service Def Projection'
+define service ZUC_RAP_EMP_887 {
+  expose ZC_RAP_EMP_887;
+}

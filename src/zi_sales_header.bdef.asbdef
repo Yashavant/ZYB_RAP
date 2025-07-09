@@ -1,0 +1,44 @@
+managed implementation in class zbp_i_sales_header unique;
+strict ( 2 );
+with draft;
+extensible;
+define behavior for ZI_SALES_HEADER alias ZiSalesHeader
+persistent table ztest_sales_hdr
+extensible
+draft table ztest_saleshdr_d
+etag master last_changed_at
+lock master total etag last_changed_at
+authorization master ( instance )
+
+{
+  create ( authorization : global );
+  update;
+  delete;
+  field ( mandatory : create ) sales_order_id;
+  field ( readonly : update ) sales_order_id;
+
+  association _Salesitem { create; with draft; }
+  draft action Activate optimized;
+  draft action Resume;
+  draft action Edit;
+  draft action Discard;
+  draft determine action Prepare;
+  mapping for ztest_sales_hdr corresponding extensible
+    {
+      sales_order_id = sales_order_id;
+    }
+}
+
+define behavior for ZI_SALES_ITEM //alias <alias_name>
+persistent table ztest_sales_item
+draft table ztest_salesitemd
+lock dependent by _Header
+authorization dependent by _Header
+etag master last_changed_at
+{
+  field ( mandatory : create ) item_number;
+  field ( readonly : update ) item_number;
+  field ( readonly ) sales_order_id;
+  association _Header { with draft; }
+
+}

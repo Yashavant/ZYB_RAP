@@ -1,0 +1,36 @@
+managed implementation in class zbp_sac_i_billheader unique;
+strict ( 2 );
+with draft;
+extensible;
+define behavior for ZSAC_I_BillHeader //alias <alias_name>
+persistent table zsac_bill_header
+extensible
+draft table zsac_bill_head_d
+etag master Locallastchangedat
+lock master total etag Locallastchangedat
+authorization master ( instance )
+//etag master <field_name>
+{
+  create ( authorization : global );
+  update;
+  delete;
+  field ( readonly : update, mandatory : create ) BillId;
+
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Edit;
+  draft action Resume;
+  draft determine action Prepare;
+
+  mapping for zsac_bill_header corresponding extensible
+    {
+      BillId             = bill_id;
+      BillType           = bill_type;
+      BillDate           = bill_date;
+      CustomerId         = customer_id;
+      NetAmount          = net_amount;
+      Currency           = currency;
+      SalesOrg           = sales_org;
+      Locallastchangedat = local_last_changed_at;
+    }
+}

@@ -1,0 +1,4 @@
+@EndUserText.label: 'Service Defination for RAP Emp'
+define service ZUI_RAP_EMP_887 {
+  expose ZI_RAP_EMP_887;
+}
