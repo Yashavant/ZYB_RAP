@@ -1,0 +1,27 @@
+managed implementation in class zbp_ybpo_header_composit unique;
+strict ( 2 );
+
+define behavior for zybpo_header_composit //alias <alias_name>
+persistent table zybpo_header
+lock master
+authorization master ( instance )
+//etag master <field_name>
+{
+  create ( authorization : global );
+  update;
+  delete;
+  field ( readonly ) Pono;
+  association _item { create; }
+}
+
+define behavior for zybpo_item_composit //alias <alias_name>
+persistent table zybpo_item
+lock dependent by _header
+authorization dependent by _header
+//etag master <field_name>
+{
+  update;
+  delete;
+  field ( readonly ) Pono, Poitem;
+  association _header;
+}

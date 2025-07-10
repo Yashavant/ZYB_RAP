@@ -1,0 +1,23 @@
+@Metadata.layer: #CUSTOMER
+annotate entity zybpo_item_consumption with
+{
+  @UI.facet: [{
+  purpose: #STANDARD,
+  position: 10,
+  label: 'Item',
+  type: #IDENTIFICATION_REFERENCE
+  }]
+  @UI.lineItem: [{ position: 10, label: 'Po no' }]
+  @UI.identification: [{ position: 10, label: 'Po no' }]
+  Pono;
+  @UI.lineItem: [{ position: 20, label: 'Item' }]
+  @UI.identification: [{ position: 20, label: 'Item' }]
+  Poitem;
+  @UI.lineItem: [{ position: 30, label: 'Quantity' }]
+  @UI.identification: [{ position: 30, label: 'Quantity' }]
+  Quantity;
+  @UI.lineItem: [{ position:40, label: 'Unit' }]
+  @UI.identification: [{ position: 40, label: 'Unit' }]
+  Unit;
+
+}

@@ -1,0 +1,5 @@
+@EndUserText.label: 'Service Definition fo PO Header'
+define service ZYBSV_PO_HEADER {
+  expose zybpo_header_consumption;
+  expose zybpo_item_consumption;
+}

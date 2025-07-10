@@ -1,0 +1,36 @@
+@Metadata.layer: #CUSTOMER
+annotate entity zybpo_header_consumption with
+{
+  @UI.facet: [{
+  purpose: #STANDARD,
+  position: 10,
+  label: 'Header',
+  type: #IDENTIFICATION_REFERENCE
+  },
+  {
+  purpose: #STANDARD,
+  position: 20,
+  label: 'Item',
+  type: #LINEITEM_REFERENCE,
+  targetElement: '_item'
+  }]
+  @UI.selectionField: [{ position: 10 }]
+  @UI.lineItem: [{ position: 10, label: 'PO No' }]
+  @UI.identification: [{ position: 10, label: 'Po NO' }]
+  Pono;
+  @UI.selectionField: [{ position: 20 }]
+  @UI.lineItem: [{ position: 20, label: 'Company' }]
+  @UI.identification: [{ position: 20, label: 'Company' }]
+  Pocompany;
+  @UI.selectionField: [{ position: 30 }]
+  @UI.lineItem: [{ position: 30, label: 'PO Date' }]
+  @UI.identification: [{ position: 30, label: 'PO Date' }]
+  Podate;
+  @UI.lineItem: [{ position: 40, label: 'Desc' }]
+  @UI.identification: [{ position: 40, label: 'Desc' }]
+  Podesc;
+  @UI.lineItem: [{ position: 50, label: 'Status' }]
+  @UI.identification: [{ position: 50, label: 'Status' }]
+  Postatus;
+
+}
