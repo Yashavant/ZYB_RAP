@@ -1,0 +1,5 @@
+CLASS zbp_sac_i_billheader DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zsac_i_billheader.
+ENDCLASS.
+
+CLASS zbp_sac_i_billheader IMPLEMENTATION.
+ENDCLASS.
