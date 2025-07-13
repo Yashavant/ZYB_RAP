@@ -29,7 +29,7 @@ authorization master ( instance )
     }
 }
 
-define behavior for ZI_SALES_ITEM //alias <alias_name>
+define behavior for ZI_SALES_ITEM alias ZiSalesItem
 persistent table ztest_sales_item
 draft table ztest_salesitemd
 lock dependent by _Header

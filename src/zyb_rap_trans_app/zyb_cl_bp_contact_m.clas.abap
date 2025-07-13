@@ -1,0 +1,5 @@
+CLASS zyb_cl_bp_contact_m DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zyb_i_contact_m.
+ENDCLASS.
+
+CLASS zyb_cl_bp_contact_m IMPLEMENTATION.
+ENDCLASS.

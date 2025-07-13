@@ -1,0 +1,10 @@
+projection;
+strict ( 2 );
+
+define behavior for ZYB_C_CONTACT_M alias Contact
+{
+  use create;
+  use update;
+  use delete;      //Delete Button will not display in screen in list(first) and Object page(details)
+  use action setStatus; //trigger Action defined in Behavior imp class
+}

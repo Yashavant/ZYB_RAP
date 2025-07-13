@@ -1,0 +1,39 @@
+managed;// implementation in class zbp_yb_i_contact_m unique;
+strict ( 2 );                                              //Check sntax of correctiness of statements
+
+define behavior for ZYB_I_CONTACT_M alias Contact
+implementation in class zyb_cl_bp_contact_m unique
+persistent table zyb_contact_m
+lock master
+authorization master ( instance )
+//etag master <field_name>
+{
+  create ( authorization : global );
+  update;
+  delete;
+  field ( readonly, numbering : managed ) ContactId;    //numbering : managed will Create automaticaly by Framework but need TYpe of SYSUUD_16 in table
+  //Bevavior Characteristic
+  field ( readonly ) Age;      //Make Age field Read only, not allow to edit
+  field ( mandatory : create ) FirstName;   //Make first name mandatory while creating new entry
+
+//Actions
+action setStatus result[1] $self;   // Action Name-SetStatus, Return single entry-result[1] and same Entity-$self
+
+  mapping for zyb_contact_m //mapping table field and view field
+    {
+      ContactId     = contact_id;
+      FirstName     = first_name;
+      MiddleName    = middle_name;
+      LastName      = last_name;
+      Gender        = Gender;
+      Dob           = Dob;
+      Age           = Age;
+      Telephone     = Telephone;
+      Email         = Email;
+      Active        = active;
+      CreatedBy     = created_by;
+      CreatedAt     = created_at;
+      LastChangedBy = last_changed_by;
+      LastChangedAt = last_changed_at;
+    }
+}

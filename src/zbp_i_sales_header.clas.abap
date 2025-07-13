@@ -1,0 +1,5 @@
+CLASS zbp_i_sales_header DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zi_sales_header.
+ENDCLASS.
+
+CLASS zbp_i_sales_header IMPLEMENTATION.
+ENDCLASS.

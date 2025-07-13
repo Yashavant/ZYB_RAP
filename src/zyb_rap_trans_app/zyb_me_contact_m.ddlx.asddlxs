@@ -1,0 +1,90 @@
+@Metadata.layer: #PARTNER
+@Search.searchable: true
+@UI.headerInfo: {
+    typeName: 'Contact',
+    typeNamePlural: 'Contacts',
+    title: {
+        type: #STANDARD,
+        label: 'First Name',
+        value: 'FirstName'
+    },
+    description: {
+        type: #STANDARD,
+        label: 'Last Name',
+        value: 'LastName'
+    }
+}
+annotate entity ZYB_C_CONTACT_M with
+{
+
+  @UI.facet: [{
+      id: 'idContact',
+      purpose: #STANDARD,
+      position: 10,
+      label: 'Contact Details',
+      type:#IDENTIFICATION_REFERENCE
+  }]
+
+  //@UI.identification: [{ position: 10 , label: 'Contact ID' }]
+  @UI.hidden: true
+  ContactId;
+
+  @UI.lineItem: [{ position: 20 , label: 'First Name'  },
+    { type: #FOR_ACTION, dataAction: 'setStatus', label: 'Change Status' }] //Add New button in Screen,dataAction: 'setStatus'->used same name in Behavior Action Name
+  @UI.identification: [{ position: 20 , label: 'First Name' },
+  { type: #FOR_ACTION, dataAction: 'setStatus', label: 'Change Status' }]
+  @Search.defaultSearchElement: true
+  @Search.fuzzinessThreshold: 0.9
+  FirstName;
+
+  @UI.lineItem: [{ position: 30, label: 'Middle Name' }]
+  @UI.identification: [{ position: 30 , label: 'Middle Name' }]
+  @Search.defaultSearchElement: true
+  @Search.fuzzinessThreshold: 0.9  
+  MiddleName;
+
+  @UI.lineItem: [{ position: 40 , label: 'Last Name' }]
+  @UI.identification: [{ position: 40 , label: 'Last Name' }]
+  @Search.defaultSearchElement: true
+  @Search.fuzzinessThreshold: 0.9  
+  LastName;
+
+  @UI.lineItem: [{ position: 50  , label: 'Gender' }]
+  @UI.identification: [{ position: 50 , label: 'Gender' }]
+  @Consumption.valueHelpDefinition: [{ entity: { name: 'ZYB_I_GENDER_VH', element: 'GenderCode' }, useForValidation: true }]
+  @UI.textArrangement: #TEXT_ONLY    //Display text only not Gender code
+  Gender;
+
+  @UI.lineItem: [{ hidden: true }]
+  @UI.identification: [{ position: 60  , label: 'Date Of Birth' }]
+  Dob;
+
+  @UI.lineItem: [{ position: 70 , label: 'Age' }]
+  @UI.identification: [{ position: 70 , label: 'Age' }]
+  Age;
+
+  @UI.lineItem: [{ position: 80 , label: 'Mobile' }]
+  @UI.identification: [{ position: 80 , label: 'Mobile' }]
+  @Search.defaultSearchElement: true
+  @Search.fuzzinessThreshold: 0.9  
+  Telephone;
+
+  @UI.lineItem: [{ hidden: true }]
+  @UI.identification: [{ position: 90 , label: 'Email' }]
+  Email;
+
+  @UI.lineItem: [{ position: 100  , label: 'Active' }]
+  @UI.identification: [{ position: 100 , label: 'Active' }]
+  Active;
+
+  @UI.hidden: true
+  CreatedBy;
+  @UI.hidden: true
+  CreatedAt;
+  @UI.hidden: true
+  LastChangedBy;
+  @UI.hidden: true
+  LastChangedAt;
+
+
+}
