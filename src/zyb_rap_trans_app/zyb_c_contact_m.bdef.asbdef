@@ -7,4 +7,16 @@ define behavior for ZYB_C_CONTACT_M alias Contact
   use update;
   use delete;      //Delete Button will not display in screen in list(first) and Object page(details)
   use action setStatus; //trigger Action defined in Behavior imp class
+  use action copyContact;
+  use action createContact;
+  use association _Address { create; }
+}
+
+
+define behavior for ZYB_C_CONTADDR_M alias Address
+{
+  use update;
+  use delete;
+  use association _Contact;
+
 }

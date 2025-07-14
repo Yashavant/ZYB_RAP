@@ -10,6 +10,7 @@
 define root view entity ZYB_I_CONTACT_M
   as select from zyb_contact_m
   association [0..*] to ZYB_I_GENDER_VH as _Gender on $projection.Gender = _Gender.GenderCode
+  composition[1..*] of ZYB_I_CONTADDR_M as _Address
 {
   key contact_id         as ContactId,
       first_name         as FirstName,
@@ -27,5 +28,7 @@ define root view entity ZYB_I_CONTACT_M
       last_changed_by    as LastChangedBy,
       last_changed_at    as LastChangedAt,
 
-      _Gender
+      _Gender,
+      _Address
+
 }

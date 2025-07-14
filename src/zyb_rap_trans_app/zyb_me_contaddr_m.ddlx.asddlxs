@@ -1,0 +1,63 @@
+@Metadata.layer: #PARTNER
+@Search.searchable: true
+@UI.headerInfo: {
+    typeName: 'Address',
+    typeNamePlural: 'Addresses',
+    title: {
+        type: #STANDARD,
+        value: 'City'
+    },
+    description: {
+        type: #STANDARD,
+        value: 'State'
+    }
+}
+annotate entity ZYB_C_CONTADDR_M with
+{
+  @UI.facet: [{
+      id: 'idAddress',
+      purpose: #STANDARD,
+      position: 10,
+      label: 'Address Details',
+      type:#IDENTIFICATION_REFERENCE
+  }]
+  @UI.hidden: true
+  ContactId;
+  @UI.hidden: true
+  AddressId;
+
+  @UI.lineItem: [{ position: 10, label: 'Address 1' }]
+  @UI.identification: [{ position: 10 , label: 'Address 1' }]
+  Addr1;
+
+  @UI.lineItem: [{ position: 20, label: 'Address 2' }]
+  @UI.identification: [{ position: 20 , label: 'Address 2' }]
+  @Search.defaultSearchElement: true
+  @Search.fuzzinessThreshold: 0.9
+  Addr2;
+
+  @UI.lineItem: [{ position: 30, label: 'City' }]
+  @UI.identification: [{ position: 30 , label: 'City' }]
+  @Search.defaultSearchElement: true
+  @Search.fuzzinessThreshold: 0.9
+  City;
+
+  @UI.lineItem: [{ position: 40, label: 'State' }]
+  @UI.identification: [{ position: 40 , label: 'State' }]
+  @Search.defaultSearchElement: true
+  @Search.fuzzinessThreshold: 0.9
+  State;
+
+  @UI.lineItem: [{ position: 50, label: 'Pin Code' }]
+  @UI.identification: [{ position: 50 , label: 'Pin Code' }]
+  Pincode;
+  @UI.hidden: true
+  CreatedBy;
+  @UI.hidden: true
+  CreatedAt;
+  @UI.hidden: true
+  LastChangedBy;
+  @UI.hidden: true
+  LastChangedAt;
+
+}

@@ -21,5 +21,7 @@ define root view entity ZYB_C_CONTACT_M
       CreatedBy,
       CreatedAt,
       LastChangedBy,
-      LastChangedAt
+      LastChangedAt,
+      _Gender,
+      _Address :redirected to composition child ZYB_C_CONTADDR_M
 }

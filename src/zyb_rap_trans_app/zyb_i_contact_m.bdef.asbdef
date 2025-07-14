@@ -12,12 +12,24 @@ authorization master ( instance )
   update;
   delete;
   field ( readonly, numbering : managed ) ContactId;    //numbering : managed will Create automaticaly by Framework but need TYpe of SYSUUD_16 in table
+  association _Address { create; }    //Create Address allowed only in Parent Behavior
+
   //Bevavior Characteristic
   field ( readonly ) Age;      //Make Age field Read only, not allow to edit
   field ( mandatory : create ) FirstName;   //Make first name mandatory while creating new entry
 
-//Actions
-action setStatus result[1] $self;   // Action Name-SetStatus, Return single entry-result[1] and same Entity-$self
+  //Actions
+  action setStatus result [1] $self;   // Action Name-SetStatus, Return single entry-result[1] and same Entity-$self
+  factory action copyContact [1];
+  static factory action createContact [1];
+
+  //Determination
+  determination calculateAge on modify { create; field Dob; }
+
+  //Validation
+  validation validateEntry on save { create; update; }
+  validation validateDob on save { field Dob; create; }
+  validation validateTel on save { create; update; }
 
   mapping for zyb_contact_m //mapping table field and view field
     {
@@ -31,6 +43,50 @@ action setStatus result[1] $self;   // Action Name-SetStatus, Return single entr
       Telephone     = Telephone;
       Email         = Email;
       Active        = active;
+      CreatedBy     = created_by;
+      CreatedAt     = created_at;
+      LastChangedBy = last_changed_by;
+      LastChangedAt = last_changed_at;
+    }
+}
+
+
+
+define behavior for ZYB_I_CONTADDR_M alias Address
+implementation in class zyb_cl_bp_address_m unique
+persistent table zyb_contaddr_m
+lock dependent by _Contact
+authorization dependent by _Contact
+//etag master <field_name>
+{
+  update;
+  delete;
+
+  association _Contact;
+
+  field ( readonly ) ContactId;
+  field ( readonly, numbering : managed ) AddressId;    //numbering : managed will Create automaticaly by Framework but need TYpe of SYSUUD_16 in table
+  //Bevavior Characteristic
+  field ( mandatory : create ) City;   //Make City mandatory while creating new entry
+
+  //Actions
+
+
+  //Determination
+
+
+  //Validation
+
+
+  mapping for zyb_contaddr_m //mapping table field and view field
+    {
+      ContactId     = contact_id;
+      AddressId     = address_id;
+      Addr1         = Addr1;
+      Addr2         = Addr2;
+      City          = City;
+      State         = state;
+      Pincode       = pincode;
       CreatedBy     = created_by;
       CreatedAt     = created_at;
       LastChangedBy = last_changed_by;

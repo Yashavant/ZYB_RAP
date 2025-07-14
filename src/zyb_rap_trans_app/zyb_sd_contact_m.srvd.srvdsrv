@@ -1,4 +1,5 @@
 @EndUserText.label: 'Service Def for Contact-Managed'
 define service ZYB_SD_CONTACT_M {
-  expose ZYB_C_CONTACT_M as Contact;
+  expose ZYB_C_CONTACT_M  as Contact;
+  expose ZYB_C_CONTADDR_M as Address;
 }

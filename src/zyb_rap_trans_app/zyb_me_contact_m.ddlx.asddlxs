@@ -23,6 +23,13 @@ annotate entity ZYB_C_CONTACT_M with
       position: 10,
       label: 'Contact Details',
       type:#IDENTIFICATION_REFERENCE
+  },{
+      id: 'idAddress',
+      purpose: #STANDARD,
+      position: 20,
+      label: 'Address',
+      type:#LINEITEM_REFERENCE,
+      targetElement: '_Address'
   }]
 
   //@UI.identification: [{ position: 10 , label: 'Contact ID' }]
@@ -30,9 +37,12 @@ annotate entity ZYB_C_CONTACT_M with
   ContactId;
 
   @UI.lineItem: [{ position: 20 , label: 'First Name'  },
-    { type: #FOR_ACTION, dataAction: 'setStatus', label: 'Change Status' }] //Add New button in Screen,dataAction: 'setStatus'->used same name in Behavior Action Name
+    { type: #FOR_ACTION, dataAction: 'setStatus', label: 'Change Status' }, //Add New button in Screen,dataAction: 'setStatus'->used same name in Behavior Action Name
+  { type: #FOR_ACTION, dataAction: 'copyContact', label: 'Copy Contact' },
+  { type: #FOR_ACTION, dataAction: 'createContact', label: 'Create Contact' }] 
   @UI.identification: [{ position: 20 , label: 'First Name' },
-  { type: #FOR_ACTION, dataAction: 'setStatus', label: 'Change Status' }]
+  { type: #FOR_ACTION, dataAction: 'setStatus', label: 'Change Status' },
+  { type: #FOR_ACTION, dataAction: 'copyContact', label: 'Copy Contact' }]
   @Search.defaultSearchElement: true
   @Search.fuzzinessThreshold: 0.9
   FirstName;
