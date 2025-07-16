@@ -1,5 +1,6 @@
 projection;
 strict ( 2 );
+use draft;
 
 define behavior for ZYB_C_CONTACT_M alias Contact
 {
@@ -9,14 +10,29 @@ define behavior for ZYB_C_CONTACT_M alias Contact
   use action setStatus; //trigger Action defined in Behavior imp class
   use action copyContact;
   use action createContact;
-  use association _Address { create; }
+  use association _Address { create; with draft; }    //Association of child ( address) Entity
+  use association _Attachment { create; with draft; }    //Association of child ( address) Entity
+
+  use action Activate;
+  use action Edit;
+  use action Resume;
+  use action Discard;
+  use action Prepare;
 }
 
 
-define behavior for ZYB_C_CONTADDR_M alias Address
+define behavior for ZYB_C_CONTADDR_M alias Address    // Projection Behavior for Addesss Entity
 {
   use update;
   use delete;
-  use association _Contact;
+  use association _Contact { with draft; }     //Association of Parent Entity
 
+}
+
+
+define behavior for ZYB_C_CONTATT_M alias Attachment    // Projection Behavior for Attachment Entity
+{
+  use update;
+  use delete;
+  use association _Contact { with draft; }     //Association of Parent Entity
 }

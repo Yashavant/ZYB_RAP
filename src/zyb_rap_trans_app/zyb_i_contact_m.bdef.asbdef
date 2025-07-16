@@ -1,28 +1,47 @@
 managed;// implementation in class zbp_yb_i_contact_m unique;
 strict ( 2 );                                              //Check sntax of correctiness of statements
+with draft;
 
 define behavior for ZYB_I_CONTACT_M alias Contact
 implementation in class zyb_cl_bp_contact_m unique
 persistent table zyb_contact_m
-lock master
+lock master total etag LastChangedAt    //For Draft
+draft table zyb_contact_d_m
 authorization master ( instance )
-//etag master <field_name>
+etag master LastChangedAt        //for Draft
 {
-  create ( authorization : global );
-  update;
+  //create ( authorization : global );
+  create ( authorization : global, precheck );     //Preheck method trigger on screen once passed data in field and used making mandatory in Create
+  //update ( features : instance );  //"features : instance" Features Control used to Make Mandatory, Display only field/Button in Edit
+  update ( precheck ); //Preheck method trigger on screen once passed data in field and used making mandatory in Update
   delete;
   field ( readonly, numbering : managed ) ContactId;    //numbering : managed will Create automaticaly by Framework but need TYpe of SYSUUD_16 in table
-  association _Address { create; }    //Create Address allowed only in Parent Behavior
+  association _Address { create; with draft; }    //Child Create Address allowed only in Parent Behavior
+  association _Attachment { create; with draft; }    //Child Create Address allowed only in Parent Behavior
+
+  // Feature control on field and code nneed to do in zyb_cl_bp_contact_m->get_instance_features class method to make enable/Disable
+  field ( features : instance ) FirstName, MiddleName, LastName;
+
 
   //Bevavior Characteristic
   field ( readonly ) Age;      //Make Age field Read only, not allow to edit
-  field ( mandatory : create ) FirstName;   //Make first name mandatory while creating new entry
+  //field ( mandatory : create ) FirstName;   //Make first name mandatory while creating new entry
 
   //Actions
   action setStatus result [1] $self;   // Action Name-SetStatus, Return single entry-result[1] and same Entity-$self
   factory action copyContact [1];
   static factory action createContact [1];
 
+  //Draft Actions
+  draft action Activate optimized;
+  draft action Edit;
+  draft action Resume;
+  draft action Discard;
+  draft determine action Prepare
+  { validation validateTel;   //validation validateTel; validation validateName; this need to add to tigger validation in Draft functionality otherwise it will not trihgger it
+    validation validateName;
+    validation Address~validateAddress; //Child Validation need to include to work in Draft mode
+  }
   //Determination
   determination calculateAge on modify { create; field Dob; }
 
@@ -30,6 +49,7 @@ authorization master ( instance )
   validation validateEntry on save { create; update; }
   validation validateDob on save { field Dob; create; }
   validation validateTel on save { create; update; }
+  validation validateName on save { create; update; }
 
   mapping for zyb_contact_m //mapping table field and view field
     {
@@ -55,19 +75,20 @@ authorization master ( instance )
 define behavior for ZYB_I_CONTADDR_M alias Address
 implementation in class zyb_cl_bp_address_m unique
 persistent table zyb_contaddr_m
-lock dependent by _Contact
-authorization dependent by _Contact
+draft table zyb_contaddr_d_m
+lock dependent by _Contact                  //Parent Entity
+authorization dependent by _Contact         //Parent Entity
 //etag master <field_name>
 {
   update;
   delete;
 
-  association _Contact;
+  association _Contact { with draft; }   //Parent entity association
 
   field ( readonly ) ContactId;
   field ( readonly, numbering : managed ) AddressId;    //numbering : managed will Create automaticaly by Framework but need TYpe of SYSUUD_16 in table
   //Bevavior Characteristic
-  field ( mandatory : create ) City;   //Make City mandatory while creating new entry
+  //field ( mandatory : create ) City;   //Make City mandatory while creating new entry
 
   //Actions
 
@@ -76,7 +97,7 @@ authorization dependent by _Contact
 
 
   //Validation
-
+  validation validateAddress on save { create; update; }
 
   mapping for zyb_contaddr_m //mapping table field and view field
     {
@@ -87,6 +108,47 @@ authorization dependent by _Contact
       City          = City;
       State         = state;
       Pincode       = pincode;
+      CreatedBy     = created_by;
+      CreatedAt     = created_at;
+      LastChangedBy = last_changed_by;
+      LastChangedAt = last_changed_at;
+    }
+}
+
+
+
+/// Behavir Def for Attachment
+define behavior for ZYB_I_CONTATT_M alias Attachments
+implementation in class zyb_cl_bp_attachment_m unique
+persistent table zyb_contatt_m
+draft table zyb_contatt_d_m
+lock dependent by _Contact                  //Parent Entity
+authorization dependent by _Contact         //Parent Entity
+//etag master <field_name>
+{
+  update;
+  delete;
+
+  association _Contact { with draft; }   //Parent entity association
+
+  field ( readonly ) ContactId;
+  field ( readonly, numbering : managed ) AttachId;    //numbering : managed will Create automaticaly by Framework but need TYpe of SYSUUD_16 in table
+  //Bevavior Characteristic
+
+  //Actions
+
+  //Determination
+
+  //Validation
+
+  mapping for zyb_contatt_m //mapping table field and view field
+    {
+      ContactId     = contact_id;
+      AttachId      = attach_id;
+      Comments      = Comments;
+      Attachment    = Attachment;
+      Mimetype      = Mimetype;
+      Filename      = filename;
       CreatedBy     = created_by;
       CreatedAt     = created_at;
       LastChangedBy = last_changed_by;

@@ -18,10 +18,13 @@ define root view entity ZYB_C_CONTACT_M
       Telephone,
       Email,
       Active,
+      @ObjectModel.virtualElementCalculatedBy: 'ABAP:ZYB_CL_VIR_ELE_CONTACT_M' //this Anotion Mandatory for VIr ele and class need create with interface-if_sadl_exit_calc_element_read
+      virtual CanVote : abap_boolean,     //Virtual elemnt should be on projection view and its data not stored in database table
       CreatedBy,
       CreatedAt,
       LastChangedBy,
       LastChangedAt,
       _Gender,
-      _Address :redirected to composition child ZYB_C_CONTADDR_M
+      _Address :redirected to composition child ZYB_C_CONTADDR_M,  //Its manditory for redirect to child complete navigation
+      _Attachment :redirected to composition child ZYB_C_CONTATT_M   //Its manditory for redirect to child complete navigation
 }

@@ -51,6 +51,11 @@ annotate entity ZYB_C_CONTADDR_M with
   @UI.lineItem: [{ position: 50, label: 'Pin Code' }]
   @UI.identification: [{ position: 50 , label: 'Pin Code' }]
   Pincode;
+
+  @UI.lineItem: [{ position: 60, label: 'Local Member' }]
+  @UI.identification: [{ position: 60 , label: 'Local Member' }]
+  IsLocal;
+
   @UI.hidden: true
   CreatedBy;
   @UI.hidden: true

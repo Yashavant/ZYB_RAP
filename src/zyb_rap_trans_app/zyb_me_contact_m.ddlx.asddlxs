@@ -22,15 +22,23 @@ annotate entity ZYB_C_CONTACT_M with
       purpose: #STANDARD,
       position: 10,
       label: 'Contact Details',
-      type:#IDENTIFICATION_REFERENCE
+      type:#IDENTIFICATION_REFERENCE   //linked with UI.lineItem to display field on details page( object Page )
   },{
       id: 'idAddress',
       purpose: #STANDARD,
       position: 20,
       label: 'Address',
-      type:#LINEITEM_REFERENCE,
-      targetElement: '_Address'
-  }]
+      type:#LINEITEM_REFERENCE,      //Display Address list on new tab and page
+      targetElement: '_Address'       //Data of Child entity Association
+  },{
+      id: 'idAttachment',
+      purpose: #STANDARD,
+      position: 30,
+      label: 'Attachments',
+      type:#LINEITEM_REFERENCE,      //Display Address list on new tab and page
+      targetElement: '_Attachment'       //Data of Child entity Association
+  }
+  ]
 
   //@UI.identification: [{ position: 10 , label: 'Contact ID' }]
   @UI.hidden: true
@@ -39,7 +47,7 @@ annotate entity ZYB_C_CONTACT_M with
   @UI.lineItem: [{ position: 20 , label: 'First Name'  },
     { type: #FOR_ACTION, dataAction: 'setStatus', label: 'Change Status' }, //Add New button in Screen,dataAction: 'setStatus'->used same name in Behavior Action Name
   { type: #FOR_ACTION, dataAction: 'copyContact', label: 'Copy Contact' },
-  { type: #FOR_ACTION, dataAction: 'createContact', label: 'Create Contact' }] 
+  { type: #FOR_ACTION, dataAction: 'createContact', label: 'Create Contact' }]
   @UI.identification: [{ position: 20 , label: 'First Name' },
   { type: #FOR_ACTION, dataAction: 'setStatus', label: 'Change Status' },
   { type: #FOR_ACTION, dataAction: 'copyContact', label: 'Copy Contact' }]
@@ -50,13 +58,13 @@ annotate entity ZYB_C_CONTACT_M with
   @UI.lineItem: [{ position: 30, label: 'Middle Name' }]
   @UI.identification: [{ position: 30 , label: 'Middle Name' }]
   @Search.defaultSearchElement: true
-  @Search.fuzzinessThreshold: 0.9  
+  @Search.fuzzinessThreshold: 0.9
   MiddleName;
 
   @UI.lineItem: [{ position: 40 , label: 'Last Name' }]
   @UI.identification: [{ position: 40 , label: 'Last Name' }]
   @Search.defaultSearchElement: true
-  @Search.fuzzinessThreshold: 0.9  
+  @Search.fuzzinessThreshold: 0.9
   LastName;
 
   @UI.lineItem: [{ position: 50  , label: 'Gender' }]
@@ -76,7 +84,7 @@ annotate entity ZYB_C_CONTACT_M with
   @UI.lineItem: [{ position: 80 , label: 'Mobile' }]
   @UI.identification: [{ position: 80 , label: 'Mobile' }]
   @Search.defaultSearchElement: true
-  @Search.fuzzinessThreshold: 0.9  
+  @Search.fuzzinessThreshold: 0.9
   Telephone;
 
   @UI.lineItem: [{ hidden: true }]
@@ -86,6 +94,10 @@ annotate entity ZYB_C_CONTACT_M with
   @UI.lineItem: [{ position: 100  , label: 'Active' }]
   @UI.identification: [{ position: 100 , label: 'Active' }]
   Active;
+
+  @UI.lineItem: [{ position: 110  , label: 'Can Vote' }]
+  @UI.identification: [{ position: 110 , label: 'Elisible for Votting' }]
+  CanVote;
 
   @UI.hidden: true
   CreatedBy;

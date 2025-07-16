@@ -21,6 +21,14 @@ CLASS lhc_Contact DEFINITION INHERITING FROM cl_abap_behavior_handler.
       IMPORTING keys FOR Contact~validateEntry.
     METHODS validateTel FOR VALIDATE ON SAVE
       IMPORTING keys FOR Contact~validateTel.
+    METHODS get_instance_features FOR INSTANCE FEATURES
+      IMPORTING keys REQUEST requested_features FOR Contact RESULT result.
+    METHODS validatename FOR VALIDATE ON SAVE
+      IMPORTING keys FOR contact~validatename.
+    METHODS precheck_update FOR PRECHECK
+      IMPORTING entities FOR UPDATE contact.
+    METHODS precheck_create FOR PRECHECK
+      IMPORTING entities FOR CREATE contact.
 
 ENDCLASS.
 
@@ -100,7 +108,6 @@ CLASS lhc_Contact IMPLEMENTATION.
 
     MAPPED mapped FAILED failed REPORTED reported.
 
-
   ENDMETHOD.
 
   METHOD calculateAge.
@@ -178,6 +185,172 @@ CLASS lhc_Contact IMPLEMENTATION.
 
     ENDLOOP.
 
+
+  ENDMETHOD.
+
+  METHOD get_instance_features.
+    "Read Instance
+    READ ENTITIES OF zyb_i_contact_m IN LOCAL MODE
+    ENTITY Contact ALL FIELDS WITH CORRESPONDING #( keys )
+    RESULT DATA(lt_contact).
+
+    "    result  = VALUE #(
+    "   FOR ls_contact IN lt_contact (
+    "  %tky = ls_contact-%tky
+    " %field-FirstName = COND #( WHEN ls_contact-Active = abap_true THEN if_abap_behv=>fc-f-read_only ELSE if_abap_behv=>fc-f-unrestricted )
+    "%field-MiddleName = COND #( WHEN ls_contact-Active = abap_true THEN if_abap_behv=>fc-f-read_only ELSE if_abap_behv=>fc-f-unrestricted )
+    "%field-LastName = COND #( WHEN ls_contact-Active = abap_true THEN if_abap_behv=>fc-f-read_only ELSE if_abap_behv=>fc-f-unrestricted )
+    "%update = COND #( WHEN ls_contact-Active = abap_true THEN if_abap_behv=>fc-o-enabled ELSE if_abap_behv=>fc-o-disabled ) " Enable/Disble Edit button on Object(Details Page)
+    ")).
+
+  ENDMETHOD.
+
+  METHOD validateName.
+
+    READ ENTITIES OF zyb_i_contact_m IN LOCAL MODE
+    ENTITY Contact ALL FIELDS WITH CORRESPONDING #( keys )
+    RESULT DATA(lt_names).
+
+    LOOP AT lt_names INTO DATA(ls_names).
+
+      IF ls_names-FirstName IS INITIAL.
+        APPEND VALUE #( %tky = ls_names-%tky ) TO failed-contact.
+
+        APPEND VALUE #(
+        %tky = ls_names-%tky
+        %element-FirstName = if_abap_behv=>mk-on
+        %msg = NEW_message_with_text(
+         severity = if_abap_behv_message=>severity-error
+         text = 'First Name is Mandatory'
+        )
+         ) TO reported-contact.
+
+      ENDIF.
+
+      IF ls_names-LastName IS INITIAL.
+        APPEND VALUE #( %tky = ls_names-%tky ) TO failed-contact.
+
+        APPEND VALUE #(
+        %tky = ls_names-%tky
+        %element-LastName = if_abap_behv=>mk-on
+        %msg = NEW_message_with_text(
+         severity = if_abap_behv_message=>severity-error
+         text = 'Last Name is Mandatory'
+        )
+         ) TO reported-contact.
+
+      ENDIF.
+
+    ENDLOOP.
+
+
+  ENDMETHOD.
+
+  METHOD precheck_update.
+
+    LOOP AT entities INTO DATA(ls_Contact).
+
+      "cheched field values changed or not, if checked then ls_Contact-%control-FirstName will mark as on
+      CHECK: ls_Contact-%control-FirstName = if_abap_behv=>mk-on OR
+            ls_Contact-%control-MiddleName = if_abap_behv=>mk-on OR
+            ls_Contact-%control-LastName = if_abap_behv=>mk-on OR
+            ls_Contact-%control-Gender = if_abap_behv=>mk-on OR
+            ls_Contact-%control-dob = if_abap_behv=>mk-on OR
+            ls_Contact-%control-Telephone = if_abap_behv=>mk-on OR
+            ls_Contact-%control-Email = if_abap_behv=>mk-on OR
+            ls_Contact-%control-Active = if_abap_behv=>mk-on.
+
+      IF ls_Contact-%control-FirstName = if_abap_behv=>mk-on.
+
+        IF ls_Contact-FirstName IS INITIAL.
+          IF ls_Contact-FirstName IS INITIAL.
+            APPEND VALUE #( %tky = ls_Contact-%tky ) TO failed-contact.   " In Create %CID need to pass(%tky is not exist for new record) and in Update %tky need to pass
+
+            APPEND VALUE #(
+            %tky = ls_Contact-%tky
+            %element-FirstName = if_abap_behv=>mk-on
+            %msg = NEW_message_with_text(
+             severity = if_abap_behv_message=>severity-error
+             text = 'First Name is Mandatory'
+            )
+             ) TO reported-contact.
+
+          ENDIF.
+        ENDIF.
+      ENDIF.
+
+      IF ls_Contact-%control-LastName = if_abap_behv=>mk-on.
+
+        IF ls_Contact-LastName IS INITIAL.
+          IF ls_Contact-LastName IS INITIAL.
+            APPEND VALUE #( %tky = ls_Contact-%tky ) TO failed-contact.
+
+            APPEND VALUE #(
+            %tky = ls_Contact-%tky
+            %element-LastName = if_abap_behv=>mk-on
+            %msg = NEW_message_with_text(
+             severity = if_abap_behv_message=>severity-error
+             text = 'Last Name is Mandatory'
+            )
+             ) TO reported-contact.
+
+          ENDIF.
+        ENDIF.
+      ENDIF.
+    ENDLOOP.
+  ENDMETHOD.
+
+  METHOD precheck_create.
+
+     LOOP AT entities INTO DATA(ls_Contact).
+
+      "cheched field values changed or not, if checked then ls_Contact-%control-FirstName will mark as on
+      CHECK: ls_Contact-%control-FirstName = if_abap_behv=>mk-on OR
+            ls_Contact-%control-MiddleName = if_abap_behv=>mk-on OR
+            ls_Contact-%control-LastName = if_abap_behv=>mk-on OR
+            ls_Contact-%control-Gender = if_abap_behv=>mk-on OR
+            ls_Contact-%control-dob = if_abap_behv=>mk-on OR
+            ls_Contact-%control-Telephone = if_abap_behv=>mk-on OR
+            ls_Contact-%control-Email = if_abap_behv=>mk-on OR
+            ls_Contact-%control-Active = if_abap_behv=>mk-on.
+
+      IF ls_Contact-%control-FirstName = if_abap_behv=>mk-on.
+
+        IF ls_Contact-FirstName IS INITIAL.
+          IF ls_Contact-FirstName IS INITIAL.
+            APPEND VALUE #( %cid = ls_Contact-%cid ) TO failed-contact.    " In Create %CID need to pass(%tky is not exist for new record) and in Update %tky need to pass
+            APPEND VALUE #(
+            %cid = ls_Contact-%cid
+            %element-FirstName = if_abap_behv=>mk-on
+            %msg = NEW_message_with_text(
+             severity = if_abap_behv_message=>severity-error
+             text = 'First Name is Mandatory'
+            )
+             ) TO reported-contact.
+
+          ENDIF.
+        ENDIF.
+      ENDIF.
+
+      IF ls_Contact-%control-LastName = if_abap_behv=>mk-on.
+
+        IF ls_Contact-LastName IS INITIAL.
+          IF ls_Contact-LastName IS INITIAL.
+            APPEND VALUE #( %cid = ls_Contact-%cid ) TO failed-contact.
+
+            APPEND VALUE #(
+            %cid = ls_Contact-%cid
+            %element-LastName = if_abap_behv=>mk-on
+            %msg = NEW_message_with_text(
+             severity = if_abap_behv_message=>severity-error
+             text = 'Last Name is Mandatory'
+            )
+             ) TO reported-contact.
+
+          ENDIF.
+        ENDIF.
+      ENDIF.
+    ENDLOOP.
 
   ENDMETHOD.
 
