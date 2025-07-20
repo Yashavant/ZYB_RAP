@@ -1,0 +1,5 @@
+CLASS zbp_yb_i_cont_saver_m DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zyb_i_contact_m.
+ENDCLASS.
+
+CLASS zbp_yb_i_cont_saver_m IMPLEMENTATION.
+ENDCLASS.

@@ -1,4 +1,4 @@
-managed;// implementation in class zbp_yb_i_contact_m unique;
+managed implementation in class zbp_yb_i_cont_saver_m unique;
 strict ( 2 );                                              //Check sntax of correctiness of statements
 with draft;
 
@@ -7,6 +7,7 @@ implementation in class zyb_cl_bp_contact_m unique
 persistent table zyb_contact_m
 lock master total etag LastChangedAt    //For Draft
 draft table zyb_contact_d_m
+with additional save    //used to capture change Logs or Send email with changes data in Create/UPdate/Delete and imlemnt in saver class
 authorization master ( instance )
 etag master LastChangedAt        //for Draft
 {
@@ -50,6 +51,20 @@ etag master LastChangedAt        //for Draft
   validation validateDob on save { field Dob; create; }
   validation validateTel on save { create; update; }
   validation validateName on save { create; update; }
+
+ //Side Effects
+ determine action validateFirstName{ validation validateName; }
+ determine action validateLastName{ validation validateName; }
+ determine action validateTelephone{ validation validateTel; }
+ side effects {
+	field Dob affects field Age;
+	determine action validateFirstName executed on field FirstName affects messages;
+	determine action validateLastName executed on field LastName affects messages;
+	determine action validateTelephone executed on field Telephone affects messages;
+}
+
+
+
 
   mapping for zyb_contact_m //mapping table field and view field
     {
